@@ -91,3 +91,12 @@ function GetValuesByProperty(array, property) {
     }
     return arrayOutput;
 }
+
+/**
+ * Get numbers of vowels in a string
+ * @param {String} inputString Input string
+ * @returns {Number} Numbers of vowels in input string
+ */
+function CountVowels(inputString) {
+    return inputString.toLowerCase().match(/[aeiou]/gi).length;
+}
