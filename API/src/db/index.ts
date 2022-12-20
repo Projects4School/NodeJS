@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
 export class Database {
     static database: mongoose.Connection = undefined;
@@ -14,5 +14,9 @@ export class Database {
                 console.log('DB connected !');
             });
         }
+    }
+
+    static LoadSchema(schemaName: string, schema: Schema) {
+        return mongoose.model(schemaName, schema);
     }
 }
