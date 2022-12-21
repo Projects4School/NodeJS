@@ -6,7 +6,7 @@ export class Database {
     static Run(): void {
         if(!this.database) {
             mongoose.set('strictQuery', false);
-            mongoose.connect(`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@database.qfjizji.mongodb.net/database`);
+            mongoose.connect(`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@database.qfjizji.mongodb.net/sample_mflix?retryWrites=true&w=majority`);
             
             this.database = mongoose.connection;
             this.database.on('error', console.error.bind(console, 'connection error:'));

@@ -4,6 +4,8 @@ import cors from "cors";
 import fs from "fs";
 import path from "path";
 import { loadComponent } from "../utils";
+import swaggerJsDoc from "swagger-jsdoc";
+import swaggerUI from "swagger-ui-express";
 
 export class Server {
     static port: number;
@@ -19,6 +21,27 @@ export class Server {
         this.app.use(urlencoded({ extended: true }));
 
         this.RoutesHandler();
+
+        const swaggerOptions = {
+            definition: {
+                openapi: '3.0.0',
+                info: {
+                    title: "Library API",
+                    version: "0.0.1",
+                },
+                servers: [
+                    {
+                      url: 'http://localhost:8800',
+                      description: 'Development server',
+                    },
+                ],
+            },
+            apis: ["routes/*"],
+        };
+
+        const swaggerDocs = swaggerJsDoc(swaggerOptions);
+
+        this.app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocs));
 
         this.app.listen(this.port, () => {
             console.log(`API running on the port ${this.port} !`);

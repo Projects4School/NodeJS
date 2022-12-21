@@ -1,6 +1,6 @@
 import { config } from "dotenv";
-import { Database } from "./db/index";
-import { Server } from "./api/index";
+import { Database } from "./db";
+import { Server } from "./api";
 
 config();
 
