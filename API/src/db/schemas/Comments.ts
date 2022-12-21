@@ -9,10 +9,10 @@ export interface CommentType {
 }
 
 const schema: Schema = new Schema<CommentType> ({
-    name: String,
-    email: String,
-    movie_id: Schema.Types.ObjectId,
-    text: String,
+    name: { type: String, required: true },
+    email: { type: String, required: true },
+    movie_id: { type: Schema.Types.ObjectId, required: true },
+    text: { type: String, required: true },
     date: { type: Date, default: Date.now }
 });
 

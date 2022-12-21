@@ -3,52 +3,19 @@ import Comments from "../../db/schemas/Comments";
 
 const router: Router = Router();
 
-/**
- * @swagger
- * components:
- *   schemas:
- *     NewUser:
- *       type: object
- *       properties:
- *         name:
- *           type: string
- *           description: The user's name.
- *           example: Leanne Graham
- *     User:
- *       allOf:
- *         - type: object
- *           properties:
- *             id:
- *               type: integer
- *               description: The user ID.
- *               example: 0
- *         - $ref: '#/components/schemas/NewUser'
- */
 router.post("/", (req: Request, res: Response) => {
-
+	const newComment = new Comments(req.body);
+	newComment.save(function (err) {
+		if (err) {
+			return res.status(500).send({
+				message: err.message || "Some error occurred while retrieving data."
+			});
+		} else return res.sendStatus(200);
+	});
 });
 
-/**
- * @swagger
- * /users:
- *   get:
- *     summary: Retrieve a list of JSONPlaceholder users.
- *     description: Retrieve a list of users from JSONPlaceholder. Can be used to populate a list of fake users when prototyping or testing an API.
- *     responses:
- *       200:
- *         description: A list of users.
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 data:
- *                   type: array
- *                   items:
- *                     $ref: '#/components/schemas/User'
-*/
 router.get("/", (req: Request, res: Response) => {
-	Comments.find({}).limit(10).then(data => {
+	Comments.find({}).limit(10).then((data) => {
       	res.json(data);
     }).catch(err => {
 		res.status(500).send({
@@ -57,29 +24,28 @@ router.get("/", (req: Request, res: Response) => {
     });
 });
 
-/**
- * @swagger
- * /hello:
- *   get:
- *     description: Returns the homepage
- *     responses:
- *       200:
- *         description: hello world
- */
 router.get("/:id", (req: Request, res: Response) => {
-  
+	Comments.findById(req.params.id).then((data) => {
+		res.json(data);
+	}).catch(err => {
+		res.status(500).send({
+			message: err.message || "Some error occurred while retrieving data."
+		});
+	});
 });
 
 router.patch("/:id", (req: Request, res: Response) => {
-  
+	
 });
 
 router.delete("/:id", (req: Request, res: Response) => {
-  
-});
-
-router.get('/', (req: Request, res: Response) => {
-    res.send('hello');
+	Comments.remove({ _id: req.params.id }).then(() => {
+		res.sendStatus(200);
+	}).catch(err => {
+		res.status(500).send({
+			message: err.message || "Some error occurred while retrieving data."
+		});
+	});
 });
 
 export default router;
