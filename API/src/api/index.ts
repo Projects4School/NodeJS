@@ -7,6 +7,7 @@ import { loadComponent } from "../utils";
 import swaggerJsDoc from "swagger-jsdoc";
 import swaggerUI from "swagger-ui-express";
 
+// Server class controller
 export class Server {
     static port: number;
     static app: Express = undefined;
@@ -14,6 +15,7 @@ export class Server {
     static Listen(port: number = 8800): void {
         if(port) this.port = port;
 
+        // Create and config express app
         this.app = express();
 
         this.app.use(cors());
@@ -43,11 +45,13 @@ export class Server {
 
         this.app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocs));
 
+        // Launch server on 8800 port
         this.app.listen(this.port, () => {
             console.log(`API running on the port ${this.port} !`);
         });
     }
 
+    // Autoloader router from files in ./routes/
     private static RoutesHandler(): void {
         fs.readdir(path.resolve(__dirname, "routes"), (error: NodeJS.ErrnoException, files: string[]) => {
             if(error) {

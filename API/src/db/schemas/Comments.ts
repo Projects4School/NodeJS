@@ -1,5 +1,6 @@
 import mongoose, { Schema } from "mongoose";
 
+// Define interface of Schema
 export interface CommentType {
     name: String,
     email: String,
@@ -8,6 +9,7 @@ export interface CommentType {
     date: Date
 }
 
+// Create schema from interface
 const schema: Schema = new Schema<CommentType> ({
     name: { type: String, required: true },
     email: { type: String, required: true },
@@ -16,10 +18,12 @@ const schema: Schema = new Schema<CommentType> ({
     date: { type: Date, default: Date.now }
 });
 
+// Rewrite function to convert data in json data
 schema.method("toJSON", function() {
     const { __v, _id, ...object } = this.toObject();
     object.id = _id;
     return object;
 });
 
+// Export schema as model
 export default mongoose.model<CommentType>("comments", schema);

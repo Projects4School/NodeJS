@@ -1,16 +1,19 @@
 import { Router, Request, Response } from "express";
 import Comments from "../../db/schemas/Comments";
 
+// Router of /comments
 const router: Router = Router();
 
 router.post("/", (req: Request, res: Response) => {
 	const newComment = new Comments(req.body);
-	newComment.save(function (err) {
+	newComment.save((err, result) => {
 		if (err) {
 			return res.status(500).send({
 				message: err.message || "Some error occurred while retrieving data."
 			});
-		} else return res.sendStatus(200);
+		} else return res.json({
+			id: result.id
+		});
 	});
 });
 
@@ -35,7 +38,13 @@ router.get("/:id", (req: Request, res: Response) => {
 });
 
 router.patch("/:id", (req: Request, res: Response) => {
-	
+	Comments.findByIdAndUpdate(req.params.id, req.body, { new: true }).then((data) => {
+		res.json(data);
+	}).catch(err => {
+		res.status(500).send({
+			message: err.message || "Some error occurred while retrieving data."
+		});
+	});
 });
 
 router.delete("/:id", (req: Request, res: Response) => {
