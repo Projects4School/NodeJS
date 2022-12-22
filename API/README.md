@@ -6,6 +6,16 @@
 npm install
 ```
 
+## Utilisation
+```cmd
+npm start
+```
+
+Default port used : 8800.
+
+## Endpoints
+- `/comments` : 
+
 ## Packages used
 - Express.js : for make http server
 - Mongoose : ORM for connect and use MongoDB
